@@ -2,6 +2,8 @@ import requests
 import pprint
 import os
 from urllib.parse import urlparse
+from dotenv import load_dotenv
+
 
 
 def get_comics():
@@ -19,6 +21,9 @@ def fetch_comics(url):
         file.write(response.content)
 
 
+
+load_dotenv()
+client_id = os.getenv('CLIENT_ID')
 url = get_comics()['img']
 print(get_comics()['alt'])
 fetch_comics(url)
