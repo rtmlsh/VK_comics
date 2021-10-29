@@ -30,13 +30,28 @@ def get_access_url(client_id):
     response = requests.get(vk_url, params=payload)
     return response.url
 
+url = get_comics()['img']
+print(get_comics()['alt'])
+fetch_comics(url)
+
 
 load_dotenv()
 client_id = os.getenv('CLIENT_ID')
 access_token = os.getenv('ACCESS_TOKEN')
-print(get_access_url(client_id))
+user_id = os.getenv('USER_ID')
 
 
-# url = get_comics()['img']
-# print(get_comics()['alt'])
-# fetch_comics(url)
+
+
+vk_api_url = 'https://api.vk.com/method/groups.get'
+payload = {
+        'access_token': access_token,
+        'extended': 1,
+        'v': 5.131
+    }
+response = requests.get(vk_api_url, params=payload)
+response.raise_for_status()
+pprint.pprint(response.json())
+
+
+
