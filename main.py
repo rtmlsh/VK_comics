@@ -5,7 +5,6 @@ from urllib.parse import urlparse
 from dotenv import load_dotenv
 
 
-
 def get_comics():
     url = 'https://xkcd.com/353/info.0.json'
     response = requests.get(url)
@@ -21,12 +20,23 @@ def fetch_comics(url):
         file.write(response.content)
 
 
+def get_access_url(client_id):
+    vk_url = 'https://oauth.vk.com/authorize'
+    payload = {
+        'client_id': client_id,
+        'scope': 'photos, groups',
+        'response_type': 'token'
+    }
+    response = requests.get(vk_url, params=payload)
+    return response.url
+
 
 load_dotenv()
 client_id = os.getenv('CLIENT_ID')
-url = get_comics()['img']
-print(get_comics()['alt'])
-fetch_comics(url)
+access_token = os.getenv('ACCESS_TOKEN')
+print(get_access_url(client_id))
 
 
-
+# url = get_comics()['img']
+# print(get_comics()['alt'])
+# fetch_comics(url)
