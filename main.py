@@ -30,6 +30,19 @@ def get_access_url(client_id):
     response = requests.get(vk_url, params=payload)
     return response.url
 
+
+def get_upload_url(access_token, group_id):
+    vk_api_url = 'https://api.vk.com/method/photos.getWallUploadServer'
+    payload = {
+            'access_token': access_token,
+            'group_id': group_id,
+            'v': 5.131
+        }
+    response = requests.get(vk_api_url, params=payload)
+    response.raise_for_status()
+    return response.json()['response']['upload_url']
+
+
 # url = get_comics()['img']
 # print(get_comics()['alt'])
 # fetch_comics(url)
@@ -38,20 +51,12 @@ def get_access_url(client_id):
 load_dotenv()
 client_id = os.getenv('CLIENT_ID')
 access_token = os.getenv('ACCESS_TOKEN')
-group_id = os.getenv('USER_ID')
+group_id = os.getenv('GROUP_ID')
 
 
 
 
-vk_api_url = 'https://api.vk.com/method/photos.getWallUploadServer'
-payload = {
-        'access_token': access_token,
-        'group_id': group_id,
-        'v': 5.131
-    }
-response = requests.get(vk_api_url, params=payload)
-response.raise_for_status()
-pprint.pprint(response.json())
+
 
 
 
