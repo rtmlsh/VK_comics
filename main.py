@@ -55,7 +55,14 @@ group_id = os.getenv('GROUP_ID')
 
 
 
-
+with open('python.png', 'rb') as file:
+    url = get_upload_url(access_token, group_id)
+    files = {
+        'photo': file,
+    }
+    response = requests.post(url, files=files)
+    response.raise_for_status()
+    pprint.pprint(response.json())
 
 
 
