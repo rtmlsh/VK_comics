@@ -65,7 +65,7 @@ def upload_image(upload_url):
         return response.json()['hash'], response.json()['photo'], response.json()['server']
 
 
-def upload_on_server(access_token, group_id, vk_server, vk_hash, vk_photo):
+def save_image(access_token, group_id, vk_server, vk_hash, vk_photo):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     payload = {
         'access_token': access_token,
@@ -75,7 +75,7 @@ def upload_on_server(access_token, group_id, vk_server, vk_hash, vk_photo):
         'hash': vk_hash,
         'photo': vk_photo,
     }
-    response = requests.post(url, json=payload)
+    response = requests.post(url, params=payload)
     response.raise_for_status()
     pprint.pprint(response.json())
 
@@ -89,8 +89,7 @@ group_id = os.getenv('GROUP_ID')
 # check_access_url(access_token)
 upload_url = get_upload_url(access_token, group_id)
 vk_hash, vk_photo, vk_server = upload_image(upload_url)
-upload_on_server(access_token, group_id, vk_server, vk_hash, vk_photo)
-
+save_image(access_token, group_id, vk_server, vk_hash, vk_photo)
 
 # url = get_comics()['img']
 # print(get_comics()['alt'])
