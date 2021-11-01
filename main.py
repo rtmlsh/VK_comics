@@ -24,11 +24,23 @@ def get_access_url(client_id):
     vk_url = 'https://oauth.vk.com/authorize'
     payload = {
         'client_id': client_id,
-        'scope': 'photos, groups',
+        'scope': 'photos,groups,wall,offline',
         'response_type': 'token'
     }
     response = requests.get(vk_url, params=payload)
-    return response.url
+    print(response.url)
+
+
+def check_access_url(access_token):
+    vk_api_url = 'https://api.vk.com/method/groups.get'
+    payload = {
+        'access_token': access_token,
+        'v': 5.131,
+        'extended': 1,
+    }
+    response = requests.get(vk_api_url, params=payload)
+    response.raise_for_status()
+    pprint.pprint(response.json())
 
 
 def get_upload_url(access_token, group_id):
@@ -43,26 +55,46 @@ def get_upload_url(access_token, group_id):
     return response.json()['response']['upload_url']
 
 
-# url = get_comics()['img']
-# print(get_comics()['alt'])
-# fetch_comics(url)
+def upload_image(upload_url):
+    with open('python.png', 'rb') as file:
+        files = {
+            'photo': file,
+        }
+        response = requests.post(upload_url, files=files)
+        response.raise_for_status()
+        return response.json()['hash'], response.json()['photo'], response.json()['server']
+
+
+def upload_on_server(access_token, group_id, vk_server, vk_hash, vk_photo):
+    url = 'https://api.vk.com/method/photos.saveWallPhoto'
+    payload = {
+        'access_token': access_token,
+        'group_id': group_id,
+        'v': 5.131,
+        'server': vk_server,
+        'hash': vk_hash,
+        'photo': vk_photo,
+    }
+    response = requests.post(url, json=payload)
+    response.raise_for_status()
+    pprint.pprint(response.json())
+
 
 
 load_dotenv()
 client_id = os.getenv('CLIENT_ID')
 access_token = os.getenv('ACCESS_TOKEN')
 group_id = os.getenv('GROUP_ID')
+# get_access_url(client_id)
+# check_access_url(access_token)
+upload_url = get_upload_url(access_token, group_id)
+vk_hash, vk_photo, vk_server = upload_image(upload_url)
+upload_on_server(access_token, group_id, vk_server, vk_hash, vk_photo)
 
 
-
-with open('python.png', 'rb') as file:
-    url = get_upload_url(access_token, group_id)
-    files = {
-        'photo': file,
-    }
-    response = requests.post(url, files=files)
-    response.raise_for_status()
-    pprint.pprint(response.json())
+# url = get_comics()['img']
+# print(get_comics()['alt'])
+# fetch_comics(url)
 
 
 
