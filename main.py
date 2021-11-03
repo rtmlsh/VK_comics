@@ -2,11 +2,19 @@ import requests
 import pprint
 import os
 from urllib.parse import urlparse
+import random
 from dotenv import load_dotenv
 
 
-def get_comics():
-    url = 'https://xkcd.com/353/info.0.json'
+def get_rand_num():
+    url = 'https://xkcd.com/info.0.json'
+    response = requests.get(url)
+    response.raise_for_status()
+    return random.randint(0, response.json()['num'])
+
+
+def get_comics(random_num):
+    url = f'https://xkcd.com/{random_num}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
     return response.json()['img'], response.json()['alt']
@@ -18,6 +26,7 @@ def fetch_comics(url):
     image_name = os.path.split(path.path)[-1]
     with open(image_name, 'wb') as file:
         file.write(response.content)
+    return image_name
 
 
 def get_access_url(client_id):
@@ -55,8 +64,8 @@ def get_upload_url(access_token, group_id):
     return response.json()['response']['upload_url']
 
 
-def upload_image(upload_url):
-    with open('python.png', 'rb') as file:
+def upload_image(upload_url, image_name):
+    with open(image_name, 'rb') as file:
         files = {
             'photo': file,
         }
@@ -103,12 +112,13 @@ load_dotenv()
 client_id = os.getenv('CLIENT_ID')
 access_token = os.getenv('ACCESS_TOKEN')
 group_id = os.getenv('GROUP_ID')
-url, comment = get_comics()
-# fetch_comics(url)
+random_num = get_rand_num()
+url, comment = get_comics(random_num)
+image_name = fetch_comics(url)
 # get_access_url(client_id)
 # check_access_url(access_token)
 upload_url = get_upload_url(access_token, group_id)
-vk_hash, vk_photo, vk_server = upload_image(upload_url)
+vk_hash, vk_photo, vk_server = upload_image(upload_url, image_name)
 media_id, owner_id = save_image(access_token, group_id, vk_server, vk_hash, vk_photo)
 post_comics(access_token, group_id, media_id, owner_id, comment)
 
