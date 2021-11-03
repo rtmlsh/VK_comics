@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 
 from fetch_comics import fetch_comics, get_comics
-from post_comics import get_upload_url, upload_comics, save_comics, post_comics
+from post_comics import get_upload_url, upload_comics, save_comics, publish_comics
 
 
 def get_access_url(client_id):
@@ -69,7 +69,7 @@ if __name__ == '__main__':
         hash,
         photo
     )
-    response = post_comics(
+    response = publish_comics(
         access_token,
         args.group_id,
         media_id,

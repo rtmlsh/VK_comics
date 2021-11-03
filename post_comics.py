@@ -42,7 +42,7 @@ def save_comics(access_token, group_id, server_num, hash, photo):
         return spec['id'], spec['owner_id']
 
 
-def post_comics(access_token, group_id, media_id, owner_id, title):
+def publish_comics(access_token, group_id, media_id, owner_id, title):
     url = 'https://api.vk.com/method/wall.post'
     payload = {
         'access_token': access_token,
