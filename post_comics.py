@@ -1,5 +1,6 @@
 import requests
 
+
 def get_upload_url(access_token, group_id):
     vk_api_url = 'https://api.vk.com/method/photos.getWallUploadServer'
     payload = {
@@ -19,7 +20,10 @@ def upload_image(upload_url, image_name):
         }
         response = requests.post(upload_url, files=files)
         response.raise_for_status()
-        return response.json()['hash'], response.json()['photo'], response.json()['server']
+        return \
+            response.json()['hash'],\
+            response.json()['photo'],\
+            response.json()['server']
 
 
 def save_image(access_token, group_id, vk_server, vk_hash, vk_photo):

@@ -1,4 +1,5 @@
 import requests
+import argparse
 import os
 from dotenv import load_dotenv
 from fetch_image import get_comics, fetch_comics
@@ -25,11 +26,17 @@ def check_access_url(access_token):
     }
     response = requests.get(vk_api_url, params=payload)
     response.raise_for_status()
+    return response
 
 
 if __name__ == '__main__':
-    load_dotenv()
+    parser = argparse.ArgumentParser(
+        description='Скрипт интегрируется с API VK и xkcd, '
+                    'и публикует комиксы на стене вк-сообщества'
+    )
+    parser.parse_args()
 
+    load_dotenv()
     client_id = os.getenv('CLIENT_ID')
     access_token = os.getenv('ACCESS_TOKEN')
     group_id = os.getenv('GROUP_ID')
@@ -42,15 +49,14 @@ if __name__ == '__main__':
 
     upload_url = get_upload_url(access_token, group_id)
     vk_hash, vk_photo, vk_server = upload_image(upload_url, image_name)
-    media_id, owner_id = save_image(access_token, group_id, vk_server, vk_hash, vk_photo)
+    media_id, owner_id = save_image(
+        access_token,
+        group_id,
+        vk_server,
+        vk_hash,
+        vk_photo
+    )
     response = post_comics(access_token, group_id, media_id, owner_id, comment)
 
     if response:
         os.remove(image_name)
-
-
-
-
-
-
-
