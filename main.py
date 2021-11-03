@@ -51,7 +51,7 @@ if __name__ == '__main__':
     get_access_url(args.client_id)
     token = input('Введите access_token: ')
     if check_access_url(token):
-        with open('.env', 'a') as file:
+        with open('.env', 'w') as file:
             file.write(f'ACCESS_TOKEN={token}')
 
     load_dotenv()
