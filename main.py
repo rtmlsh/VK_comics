@@ -103,9 +103,7 @@ def post_comics(access_token, group_id, media_id, owner_id, comment):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    pprint.pprint(response.json())
-
-
+    return response
 
 
 load_dotenv()
@@ -120,7 +118,9 @@ image_name = fetch_comics(url)
 upload_url = get_upload_url(access_token, group_id)
 vk_hash, vk_photo, vk_server = upload_image(upload_url, image_name)
 media_id, owner_id = save_image(access_token, group_id, vk_server, vk_hash, vk_photo)
-post_comics(access_token, group_id, media_id, owner_id, comment)
+response = post_comics(access_token, group_id, media_id, owner_id, comment)
+if response:
+    os.remove(image_name)
 
 
 
