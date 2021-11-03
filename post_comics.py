@@ -26,14 +26,14 @@ def upload_comics(upload_url, comics):
             response.json()['server']
 
 
-def save_comics(access_token, group_id, server_num, hash, photo):
+def save_comics(access_token, group_id, server_num, hash_num, photo):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     payload = {
         'access_token': access_token,
         'group_id': group_id,
         'v': 5.131,
         'server': server_num,
-        'hash': hash,
+        'hash': hash_num,
         'photo': photo,
     }
     response = requests.post(url, params=payload)

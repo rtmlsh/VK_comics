@@ -61,12 +61,12 @@ if __name__ == '__main__':
     comics = fetch_comics(url)
 
     upload_url = get_upload_url(access_token, args.group_id)
-    hash, photo, server_num = upload_comics(upload_url, comics)
+    hash_num, photo, server_num = upload_comics(upload_url, comics)
     media_id, owner_id = save_comics(
         access_token,
         args.group_id,
         server_num,
-        hash,
+        hash_num,
         photo
     )
     response = publish_comics(
