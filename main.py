@@ -9,7 +9,7 @@ def get_comics():
     url = 'https://xkcd.com/353/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
-    return response.json()
+    return response.json()['img'], response.json()['alt']
 
 
 def fetch_comics(url):
@@ -77,7 +77,25 @@ def save_image(access_token, group_id, vk_server, vk_hash, vk_photo):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
+    for spec in response.json()['response']:
+        return spec['id'], spec['owner_id']
+
+
+def post_comics(access_token, group_id, media_id, owner_id, comment):
+    url = 'https://api.vk.com/method/wall.post'
+    payload = {
+        'access_token': access_token,
+        'v': 5.131,
+        'owner_id': f'-{group_id}',
+        'from_group': 1,
+        'attachment': f'photo{owner_id}_{media_id}',
+        'message': comment,
+
+    }
+    response = requests.post(url, params=payload)
+    response.raise_for_status()
     pprint.pprint(response.json())
+
 
 
 
@@ -85,15 +103,17 @@ load_dotenv()
 client_id = os.getenv('CLIENT_ID')
 access_token = os.getenv('ACCESS_TOKEN')
 group_id = os.getenv('GROUP_ID')
+url, comment = get_comics()
+# fetch_comics(url)
 # get_access_url(client_id)
 # check_access_url(access_token)
 upload_url = get_upload_url(access_token, group_id)
 vk_hash, vk_photo, vk_server = upload_image(upload_url)
-save_image(access_token, group_id, vk_server, vk_hash, vk_photo)
+media_id, owner_id = save_image(access_token, group_id, vk_server, vk_hash, vk_photo)
+post_comics(access_token, group_id, media_id, owner_id, comment)
 
-# url = get_comics()['img']
-# print(get_comics()['alt'])
-# fetch_comics(url)
+
+
 
 
 
