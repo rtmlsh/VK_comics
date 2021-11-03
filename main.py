@@ -69,7 +69,13 @@ if __name__ == '__main__':
         vk_hash,
         vk_photo
     )
-    response = post_comics(access_token, args.group_id, media_id, owner_id, comment)
+    response = post_comics(
+        access_token,
+        args.group_id,
+        media_id,
+        owner_id,
+        comment
+    )
 
     if response:
         os.remove(image_name)
