@@ -1,7 +1,8 @@
-import requests
 import os
-from urllib.parse import urlparse
 import random
+from urllib.parse import urlparse
+
+import requests
 
 
 def get_rand_num():
