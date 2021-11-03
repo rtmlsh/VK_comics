@@ -2,7 +2,7 @@ import requests
 import argparse
 import os
 from dotenv import load_dotenv
-from fetch_image import get_comics, fetch_comics
+from fetch_comics import get_comics, fetch_comics
 from post_comics import get_upload_url, upload_image, save_image, post_comics
 
 
