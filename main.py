@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 
 from fetch_comics import fetch_comics, get_comics
-from post_comics import get_upload_url, post_comics, save_image, upload_image
+from post_comics import get_upload_url, upload_comics, save_comics, post_comics
 
 
 def get_access_url(client_id):
@@ -57,25 +57,25 @@ if __name__ == '__main__':
     load_dotenv()
     access_token = os.getenv('ACCESS_TOKEN')
 
-    url, comment = get_comics()
-    image_name = fetch_comics(url)
+    url, title = get_comics()
+    comics = fetch_comics(url)
 
     upload_url = get_upload_url(access_token, args.group_id)
-    vk_hash, vk_photo, vk_server = upload_image(upload_url, image_name)
-    media_id, owner_id = save_image(
+    hash, photo, server_num = upload_comics(upload_url, comics)
+    media_id, owner_id = save_comics(
         access_token,
         args.group_id,
-        vk_server,
-        vk_hash,
-        vk_photo
+        server_num,
+        hash,
+        photo
     )
     response = post_comics(
         access_token,
         args.group_id,
         media_id,
         owner_id,
-        comment
+        title
     )
 
     if response:
-        os.remove(image_name)
+        os.remove(comics)

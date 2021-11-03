@@ -13,8 +13,8 @@ def get_upload_url(access_token, group_id):
     return response.json()['response']['upload_url']
 
 
-def upload_image(upload_url, image_name):
-    with open(image_name, 'rb') as file:
+def upload_comics(upload_url, comics):
+    with open(comics, 'rb') as file:
         files = {
             'photo': file,
         }
@@ -26,15 +26,15 @@ def upload_image(upload_url, image_name):
             response.json()['server']
 
 
-def save_image(access_token, group_id, vk_server, vk_hash, vk_photo):
+def save_comics(access_token, group_id, server_num, hash, photo):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     payload = {
         'access_token': access_token,
         'group_id': group_id,
         'v': 5.131,
-        'server': vk_server,
-        'hash': vk_hash,
-        'photo': vk_photo,
+        'server': server_num,
+        'hash': hash,
+        'photo': photo,
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
@@ -42,7 +42,7 @@ def save_image(access_token, group_id, vk_server, vk_hash, vk_photo):
         return spec['id'], spec['owner_id']
 
 
-def post_comics(access_token, group_id, media_id, owner_id, comment):
+def post_comics(access_token, group_id, media_id, owner_id, title):
     url = 'https://api.vk.com/method/wall.post'
     payload = {
         'access_token': access_token,
@@ -50,7 +50,7 @@ def post_comics(access_token, group_id, media_id, owner_id, comment):
         'owner_id': f'-{group_id}',
         'from_group': 1,
         'attachment': f'photo{owner_id}_{media_id}',
-        'message': comment,
+        'message': title,
 
     }
     response = requests.post(url, params=payload)

@@ -23,7 +23,7 @@ def get_comics():
 def fetch_comics(url):
     response = requests.get(url)
     path = urlparse(url)
-    image_name = os.path.split(path.path)[-1]
-    with open(image_name, 'wb') as file:
+    comics = os.path.split(path.path)[-1]
+    with open(comics, 'wb') as file:
         file.write(response.content)
-    return image_name
+    return comics
