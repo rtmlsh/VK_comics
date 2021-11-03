@@ -1,32 +1,7 @@
 import requests
-import pprint
 import os
-from urllib.parse import urlparse
-import random
 from dotenv import load_dotenv
-
-
-def get_rand_num():
-    url = 'https://xkcd.com/info.0.json'
-    response = requests.get(url)
-    response.raise_for_status()
-    return random.randint(0, response.json()['num'])
-
-
-def get_comics(random_num):
-    url = f'https://xkcd.com/{random_num}/info.0.json'
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.json()['img'], response.json()['alt']
-
-
-def fetch_comics(url):
-    response = requests.get(url)
-    path = urlparse(url)
-    image_name = os.path.split(path.path)[-1]
-    with open(image_name, 'wb') as file:
-        file.write(response.content)
-    return image_name
+from fetch_image import get_comics, fetch_comics
 
 
 def get_access_url(client_id):
@@ -49,7 +24,7 @@ def check_access_url(access_token):
     }
     response = requests.get(vk_api_url, params=payload)
     response.raise_for_status()
-    pprint.pprint(response.json())
+
 
 
 def get_upload_url(access_token, group_id):
@@ -110,8 +85,7 @@ load_dotenv()
 client_id = os.getenv('CLIENT_ID')
 access_token = os.getenv('ACCESS_TOKEN')
 group_id = os.getenv('GROUP_ID')
-random_num = get_rand_num()
-url, comment = get_comics(random_num)
+url, comment = get_comics()
 image_name = fetch_comics(url)
 # get_access_url(client_id)
 # check_access_url(access_token)
