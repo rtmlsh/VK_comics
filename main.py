@@ -4,7 +4,7 @@ import os
 import requests
 from dotenv import load_dotenv
 
-from fetch_comics import fetch_comics, get_comics
+from fetch_comics import get_comics_num, get_comics, fetch_comics
 from post_comics import get_upload_url, upload_comics, save_comics, publish_comics
 
 
@@ -57,7 +57,8 @@ if __name__ == '__main__':
     load_dotenv()
     access_token = os.getenv('VK_ACCESS_TOKEN')
 
-    url, title = get_comics()
+    comics_num = get_comics_num()
+    url, title = get_comics(comics_num)
     comics = fetch_comics(url)
 
     upload_url = get_upload_url(access_token, args.group_id)

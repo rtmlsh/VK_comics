@@ -12,8 +12,7 @@ def get_comics_num():
     return random.randint(0, response.json()['num'])
 
 
-def get_comics():
-    comics_num = get_comics_num()
+def get_comics(comics_num):
     url = f'https://xkcd.com/{comics_num}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
