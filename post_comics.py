@@ -4,10 +4,10 @@ import requests
 def get_upload_url(access_token, group_id):
     vk_api_url = 'https://api.vk.com/method/photos.getWallUploadServer'
     payload = {
-            'access_token': access_token,
-            'group_id': group_id,
-            'v': 5.131
-        }
+        'access_token': access_token,
+        'group_id': group_id,
+        'v': 5.131
+    }
     response = requests.get(vk_api_url, params=payload)
     response.raise_for_status()
     return response.json()['response']['upload_url']
