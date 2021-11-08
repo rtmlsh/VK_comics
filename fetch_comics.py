@@ -5,7 +5,7 @@ from urllib.parse import urlparse
 import requests
 
 
-def get_rand_num():
+def get_comics_num():
     url = 'https://xkcd.com/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
@@ -13,8 +13,8 @@ def get_rand_num():
 
 
 def get_comics():
-    random_num = get_rand_num()
-    url = f'https://xkcd.com/{random_num}/info.0.json'
+    comics_num = get_comics_num()
+    url = f'https://xkcd.com/{comics_num}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
     return response.json()['img'], response.json()['alt']
