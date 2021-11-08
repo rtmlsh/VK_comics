@@ -52,10 +52,10 @@ if __name__ == '__main__':
     token = input('Введите access_token: ')
     if check_access_url(token):
         with open('.env', 'w') as file:
-            file.write(f'ACCESS_TOKEN={token}')
+            file.write(f'VK_ACCESS_TOKEN={token}')
 
     load_dotenv()
-    access_token = os.getenv('ACCESS_TOKEN')
+    access_token = os.getenv('VK_ACCESS_TOKEN')
 
     url, title = get_comics()
     comics = fetch_comics(url)
