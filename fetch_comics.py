@@ -1,6 +1,4 @@
-import os
 import random
-from urllib.parse import urlparse
 
 import requests
 
@@ -20,10 +18,8 @@ def get_comics(comics_num):
     return api_response
 
 
-def fetch_comics(url):
+def fetch_comics(comics, url):
     response = requests.get(url)
-    path = urlparse(url)
-    comics = os.path.split(path.path)[-1]
     with open(comics, 'wb') as file:
         file.write(response.content)
-    return comics
+
