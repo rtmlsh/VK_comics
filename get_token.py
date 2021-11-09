@@ -1,5 +1,6 @@
-import requests
 import argparse
+
+import requests
 
 
 def get_access_url(client_id):
