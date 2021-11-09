@@ -27,8 +27,7 @@ def check_access_url(access_token):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Скрипт интегрируется с API VK и xkcd, '
-                    'и публикует комиксы на стене вк-сообщества'
+        description='Скрипт интегрируется с API VK для получения токена доступа'
 
     )
 
