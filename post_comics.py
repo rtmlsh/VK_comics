@@ -40,8 +40,11 @@ def save_comics(access_token, group_id, server_num, hash_num, photo):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    for spec in response.json()['response']:
-        return spec['id'], spec['owner_id']
+    specs = [
+        response.json()['response'][0]['id'],
+        response.json()['response'][0]['owner_id']
+    ]
+    return specs
 
 
 def publish_comics(access_token, group_id, media_id, owner_id, title):
