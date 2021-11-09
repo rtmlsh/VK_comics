@@ -20,6 +20,7 @@ def get_comics(comics_num):
 
 def fetch_comics(comics, url):
     response = requests.get(url)
+    response.raise_for_status()
     with open(comics, 'wb') as file:
         file.write(response.content)
 
