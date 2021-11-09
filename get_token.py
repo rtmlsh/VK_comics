@@ -1,6 +1,7 @@
 import requests
 import argparse
 
+
 def get_access_url(client_id):
     vk_url = 'https://oauth.vk.com/authorize'
     payload = {
