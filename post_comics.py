@@ -19,13 +19,13 @@ def upload_comics(upload_url, comics):
             'photo': file,
         }
         response = requests.post(upload_url, files=files)
-        response.raise_for_status()
-        server_response = [
-            response.json()['hash'],
-            response.json()['photo'],
-            response.json()['server']
-        ]
-        return server_response
+    response.raise_for_status()
+    server_response = [
+        response.json()['hash'],
+        response.json()['photo'],
+        response.json()['server']
+    ]
+    return server_response
 
 
 def save_comics(access_token, group_id, server_num, hash_num, photo):
