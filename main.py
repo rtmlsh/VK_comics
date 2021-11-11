@@ -49,6 +49,5 @@ if __name__ == '__main__':
         except (requests.HTTPError, requests.ConnectionError,
                 requests.TooManyRedirects) as error:
             print(error, response.text)
-
     finally:
         os.remove(comics)
