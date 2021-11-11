@@ -1,12 +1,13 @@
 import argparse
 import os
-
-from dotenv import load_dotenv
 from urllib.parse import urlparse
 
-from fetch_comics import get_comics_num, get_comics, fetch_comics
-from post_comics import get_upload_url, upload_comics, save_comics, publish_comics
+import requests
+from dotenv import load_dotenv
 
+from fetch_comics import fetch_comics, get_comics, get_comics_num
+from post_comics import (get_upload_url, publish_comics, save_comics,
+                         upload_comics)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
@@ -37,12 +38,17 @@ if __name__ == '__main__':
             hash_num,
             photo
         )
-        response = publish_comics(
-            access_token,
-            group_id,
-            media_id,
-            owner_id,
-            title
-        )
+        try:
+            response = publish_comics(
+                access_token,
+                group_id,
+                media_id,
+                owner_id,
+                title
+            )
+        except (requests.HTTPError, requests.ConnectionError,
+                requests.TooManyRedirects) as error:
+            print(error, response.text)
+
     finally:
         os.remove(comics)
