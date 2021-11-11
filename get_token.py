@@ -28,22 +28,19 @@ def check_access_url(access_token):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
-        description='Скрипт интегрируется с API VK для получения токена доступа'
-
+        description='Скрипт интегрируется с API VK'
+                    'для получения токена доступа'
     )
 
     parser.add_argument(
         'client_id',
         help='Укажите client_id',
     )
-    parser.add_argument(
-        'group_id',
-        help='Укажите group_id',
-    )
+
     args = parser.parse_args()
     parser.parse_args()
 
     get_access_url(args.client_id)
-    token = input('Введите access_token: ')
+    token = input('Проверьте access_token: ')
     if check_access_url(token):
         print('Токен работает')
