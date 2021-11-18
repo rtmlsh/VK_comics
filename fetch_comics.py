@@ -3,7 +3,7 @@ import random
 import requests
 
 
-def get_comics_num():
+def get_rand_comics_num():
     url = 'https://xkcd.com/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
