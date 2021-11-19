@@ -11,7 +11,7 @@ def get_access_url(client_id):
         'response_type': 'token'
     }
     response = requests.get(vk_url, params=payload)
-    print(response.url)
+    return response.url
 
 
 def check_access_url(access_token):
@@ -40,7 +40,8 @@ if __name__ == '__main__':
     args = parser.parse_args()
     parser.parse_args()
 
-    get_access_url(args.client_id)
+    print(get_access_url(args.client_id))
+
     token = input('Проверьте access_token: ')
     if check_access_url(token):
         print('Токен работает')
