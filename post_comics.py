@@ -57,3 +57,26 @@ def publish_comics(access_token, group_id, media_id, owner_id, title):
     response = requests.post(url, params=payload)
     response.raise_for_status()
     return response
+
+
+def check_response(access_token, group_id, title, comics):
+    try:
+        upload_url = get_upload_url(access_token, group_id)
+        hash_num, photo, server_num = upload_comics(upload_url, comics)
+        media_id, owner_id = save_comics(
+            access_token,
+            group_id,
+            server_num,
+            hash_num,
+            photo
+        )
+        response = publish_comics(
+            access_token,
+            group_id,
+            media_id,
+            owner_id,
+            title
+        )
+    except (requests.HTTPError, requests.ConnectionError,
+            requests.TooManyRedirects) as error:
+        print(error, response.text)
