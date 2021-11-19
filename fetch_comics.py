@@ -14,8 +14,8 @@ def get_comics(comics_num):
     url = f'https://xkcd.com/{comics_num}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
-    api_response = [response.json()['img'], response.json()['alt']]
-    return api_response
+    api_response = response.json()
+    return api_response['img'], api_response['alt']
 
 
 def fetch_comics(comics, url):

@@ -20,12 +20,11 @@ def upload_comics(upload_url, comics):
         }
         response = requests.post(upload_url, files=files)
     response.raise_for_status()
-    server_response = [
-        response.json()['hash'],
-        response.json()['photo'],
-        response.json()['server']
-    ]
-    return server_response
+    server_response = response.json()
+    return \
+        server_response['hash'],\
+        server_response['photo'],\
+        server_response['server']
 
 
 def save_comics(access_token, group_id, server_num, hash_num, photo):
@@ -40,11 +39,8 @@ def save_comics(access_token, group_id, server_num, hash_num, photo):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    specs = [
-        response.json()['response'][0]['id'],
-        response.json()['response'][0]['owner_id']
-    ]
-    return specs
+    specs = response.json()['response'][0]
+    return specs['id'], specs['owner_id']
 
 
 def publish_comics(access_token, group_id, media_id, owner_id, title):
