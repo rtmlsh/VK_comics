@@ -34,6 +34,7 @@ def upload_comics(upload_url, comics):
         check_errors(response)
         raise
 
+
 def save_comics(access_token, group_id, server_num, hash_num, photo):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     payload = {
@@ -76,5 +77,7 @@ def publish_comics(access_token, group_id, media_id, owner_id, title):
 
 def check_errors(response):
     if response.json()['error']:
-         print(f"Function: {get_upload_url.__name__}, "
-               f"Error: {response.json()['error']['error_msg']}")
+        print(
+             f"Function: {get_upload_url.__name__}, "
+             f"Error: {response.json()['error']['error_msg']}"
+         )
