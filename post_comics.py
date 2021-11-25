@@ -10,7 +10,11 @@ def get_upload_url(access_token, group_id):
     }
     response = requests.get(vk_api_url, params=payload)
     response.raise_for_status()
-    return response.json()['response']['upload_url']
+    try:
+        return response.json()['response']['upload_url']
+    except:
+        check_errors(response)
+        raise
 
 
 def upload_comics(upload_url, comics):
@@ -20,12 +24,15 @@ def upload_comics(upload_url, comics):
         }
         response = requests.post(upload_url, files=files)
     response.raise_for_status()
-    server_response = response.json()
-    return \
-        server_response['hash'],\
-        server_response['photo'],\
-        server_response['server']
-
+    try:
+        server_response = response.json()
+        return \
+            server_response['hash'],\
+            server_response['photo'],\
+            server_response['server']
+    except Exception:
+        check_errors(response)
+        raise
 
 def save_comics(access_token, group_id, server_num, hash_num, photo):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
@@ -39,8 +46,12 @@ def save_comics(access_token, group_id, server_num, hash_num, photo):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    specs = response.json()['response'][0]
-    return specs['id'], specs['owner_id']
+    try:
+        specs = response.json()['response'][0]
+        return specs['id'], specs['owner_id']
+    except Exception:
+        check_errors(response)
+        raise
 
 
 def publish_comics(access_token, group_id, media_id, owner_id, title):
@@ -56,27 +67,14 @@ def publish_comics(access_token, group_id, media_id, owner_id, title):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    return response
-
-
-def check_response(access_token, group_id, title, comics):
     try:
-        upload_url = get_upload_url(access_token, group_id)
-        hash_num, photo, server_num = upload_comics(upload_url, comics)
-        media_id, owner_id = save_comics(
-            access_token,
-            group_id,
-            server_num,
-            hash_num,
-            photo
-        )
-        response = publish_comics(
-            access_token,
-            group_id,
-            media_id,
-            owner_id,
-            title
-        )
-    except (requests.HTTPError, requests.ConnectionError,
-            requests.TooManyRedirects) as error:
-        print(error, response.text)
+        return response
+    except Exception:
+        check_errors()
+        raise
+
+
+def check_errors(response):
+    if response.json()['error']:
+         print(f"Function: {get_upload_url.__name__}, "
+               f"Error: {response.json()['error']['error_msg']}")
