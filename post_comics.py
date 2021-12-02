@@ -76,7 +76,8 @@ def publish_comics(access_token, group_id, media_id, owner_id, title):
 
 
 def check_errors(response):
-    if response.json()['error']:
+    error = response.json()['error']
+    if error:
         print(
-             f"Error: {response.json()['error']['error_msg']}"
+             f"Error: {error['error']['error_msg']}"
          )
