@@ -78,6 +78,5 @@ def publish_comics(access_token, group_id, media_id, owner_id, title):
 def check_errors(response):
     if response.json()['error']:
         print(
-             f"Function: {get_upload_url.__name__}, "
              f"Error: {response.json()['error']['error_msg']}"
          )
