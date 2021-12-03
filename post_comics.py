@@ -10,11 +10,9 @@ def get_upload_url(access_token, group_id):
     }
     response = requests.get(vk_api_url, params=payload)
     response.raise_for_status()
-    try:
-        return response.json()['response']['upload_url']
-    except:
-        check_errors(response)
-        raise
+    check_errors(response)
+    print(response.json())
+    return response.json()['response']['upload_url']
 
 
 def upload_comics(upload_url, comics):
@@ -24,15 +22,12 @@ def upload_comics(upload_url, comics):
         }
         response = requests.post(upload_url, files=files)
     response.raise_for_status()
-    try:
-        server_response = response.json()
-        return \
-            server_response['hash'],\
-            server_response['photo'],\
-            server_response['server']
-    except Exception:
-        check_errors(response)
-        raise
+    check_errors(response)
+    server_response = response.json()
+    return \
+        server_response['hash'],\
+        server_response['photo'],\
+        server_response['server']
 
 
 def save_comics(access_token, group_id, server_num, hash_num, photo):
@@ -47,12 +42,9 @@ def save_comics(access_token, group_id, server_num, hash_num, photo):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    try:
-        specs = response.json()['response'][0]
-        return specs['id'], specs['owner_id']
-    except Exception:
-        check_errors(response)
-        raise
+    check_errors(response)
+    specs = response.json()['response'][0]
+    return specs['id'], specs['owner_id']
 
 
 def publish_comics(access_token, group_id, media_id, owner_id, title):
@@ -68,16 +60,12 @@ def publish_comics(access_token, group_id, media_id, owner_id, title):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    try:
-        return response
-    except Exception:
-        check_errors()
-        raise
+    check_errors(response)
+    return response
 
 
 def check_errors(response):
     error = response.json()['error']
     if error:
-        print(
-             f"Error: {error['error']['error_msg']}"
-         )
+        print(error['error_msg'])
+        raise requests.HTTPError('VK API has occurred')

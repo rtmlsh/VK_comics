@@ -45,5 +45,7 @@ if __name__ == '__main__':
             owner_id,
             title
         )
+    except:
+        raise
     finally:
         os.remove(comics)
