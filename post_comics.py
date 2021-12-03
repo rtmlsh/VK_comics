@@ -11,7 +11,6 @@ def get_upload_url(access_token, group_id):
     response = requests.get(vk_api_url, params=payload)
     response.raise_for_status()
     check_errors(response)
-    print(response.json())
     return response.json()['response']['upload_url']
 
 
@@ -65,7 +64,6 @@ def publish_comics(access_token, group_id, media_id, owner_id, title):
 
 
 def check_errors(response):
-    error = response.json()['error']
-    if error:
-        print(error['error_msg'])
-        raise requests.HTTPError('VK API has occurred')
+    error = response.json()
+    if 'error' in error:
+        raise requests.HTTPError(error["error"]["error_msg"])

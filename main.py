@@ -46,6 +46,6 @@ if __name__ == '__main__':
             title
         )
     except:
-        raise
+        raise 
     finally:
         os.remove(comics)
