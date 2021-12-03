@@ -8,6 +8,7 @@ from fetch_comics import fetch_comics, get_comics, get_rand_comics_num
 from post_comics import get_upload_url, upload_comics,\
     save_comics, publish_comics
 
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description='Скрипт интегрируется с API VK и xkcd, '
@@ -46,6 +47,6 @@ if __name__ == '__main__':
             title
         )
     except:
-        raise 
+        raise
     finally:
         os.remove(comics)
