@@ -10,8 +10,9 @@ def get_upload_url(access_token, group_id):
     }
     response = requests.get(vk_api_url, params=payload)
     response.raise_for_status()
-    check_errors(response)
-    return response.json()['response']['upload_url']
+    server_response = response.json()
+    check_errors(server_response)
+    return server_response['response']['upload_url']
 
 
 def upload_comics(upload_url, comics):
@@ -21,8 +22,8 @@ def upload_comics(upload_url, comics):
         }
         response = requests.post(upload_url, files=files)
     response.raise_for_status()
-    check_errors(response)
     server_response = response.json()
+    check_errors(server_response)
     return \
         server_response['hash'],\
         server_response['photo'],\
@@ -41,8 +42,9 @@ def save_comics(access_token, group_id, server_num, hash_num, photo):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    check_errors(response)
-    specs = response.json()['response'][0]
+    server_response = response.json()
+    check_errors(server_response)
+    specs = server_response['response'][0]
     return specs['id'], specs['owner_id']
 
 
@@ -59,11 +61,11 @@ def publish_comics(access_token, group_id, media_id, owner_id, title):
     }
     response = requests.post(url, params=payload)
     response.raise_for_status()
-    check_errors(response)
-    return response
+    server_response = response.json()
+    check_errors(server_response)
+    return server_response
 
 
-def check_errors(response):
-    error = response.json()
+def check_errors(error):
     if 'error' in error:
         raise requests.HTTPError(error["error"]["error_msg"])
